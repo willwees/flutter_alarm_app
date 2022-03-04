@@ -75,28 +75,52 @@ class ClockWidget extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               // Clock dial & number
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                padding: EdgeInsets.all(10.0.w),
-                child: CustomPaint(
-                  painter: ClockDialPainter(),
-                ),
-              ),
-              const ClockHandsWidget(),
+              _buildClockDialAndNumber(),
+              // Clock hands
+              _buildClockHandsWidget(),
               // Center dot
-              Center(
-                child: Container(
-                  width: 10.0.w,
-                  height: 10.0.w,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              _buildClockCenterDot(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClockDialAndNumber() {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      padding: EdgeInsets.all(10.0.w),
+      child: CustomPaint(
+        painter: ClockDialPainter(),
+      ),
+    );
+  }
+
+  Widget _buildClockHandsWidget() {
+    return AspectRatio(
+      aspectRatio: 1.0,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20.0),
+        child: Stack(
+          children: const <Widget>[
+            ClockHourHandWidget(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClockCenterDot() {
+    return Center(
+      child: Container(
+        width: 10.0.w,
+        height: 10.0.w,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
         ),
       ),
     );
