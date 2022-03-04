@@ -101,9 +101,8 @@ class ClockWidget extends StatelessWidget {
   Widget _buildClockHandsWidget() {
     return AspectRatio(
       aspectRatio: 1.0,
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
-        padding: const EdgeInsets.all(20.0),
         child: Stack(
           children: const <Widget>[
             ClockHourHandWidget(),
