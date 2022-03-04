@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app/src/widgets/clock_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,14 +16,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Alarm App'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
+      body: const Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: ClockWidget(),
         ),
       ),
     );
