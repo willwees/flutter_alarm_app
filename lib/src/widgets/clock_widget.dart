@@ -123,7 +123,7 @@ class ClockWidget extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             ClockHourHandWidget(hours: hours, onPanUpdate: onHourPanUpdate),
-            ClockMinuteHandWidget(),
+            ClockMinuteHandWidget(minutes: minutes, onPanUpdate: onMinutesPanUpdate),
             ClockSecondHandWidget(),
           ],
         ),
