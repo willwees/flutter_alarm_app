@@ -50,13 +50,14 @@ class NotificationService {
   Future<void> scheduleNotifications({
     required String title,
     required String body,
+    required DateTime dateTime,
     String? payload,
   }) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       0,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
+      tz.TZDateTime.from(dateTime, tz.local),
       NotificationDetails(android: _androidNotificationDetails),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,

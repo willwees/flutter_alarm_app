@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _notificationService.scheduleNotifications(
                   title: 'Alarm triggered!',
                   body: 'h: ${state.hours}, m: ${state.minutes}, s: ${state.seconds}',
+                  dateTime: state.alarmDateTime,
                   payload: '/detail',
                 );
               }
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSecondsPanUpdate: (int newSeconds) =>
                         _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
                   ),
-                  SizedBox(height: 24.0.w),
+                  SizedBox(height: 48.0.w),
                   // Save Button
                   ElevatedButton(
                     onPressed: () => _homeBloc.add(HomeSaveAlarmEvent()),

@@ -6,7 +6,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeState()) {
+  HomeBloc() : super(HomeState(alarmDateTime: DateTime(1900))) {
     on<HomeUpdateClockEvent>(_setClock);
     on<HomeSaveAlarmEvent>(_saveAlarm);
   }
@@ -26,9 +26,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _saveAlarm(HomeSaveAlarmEvent event, Emitter<HomeState> emit) {
-    emit(state.copyWith(isSaved: true));
+    final DateTime alarmDateTime = _getAlarmDateTime(state.hours, state.minutes, state.seconds);
+
+    emit(state.copyWith(isSaved: true, alarmDateTime: alarmDateTime));
 
     // reset to false
     emit(state.copyWith(isSaved: false));
+  }
+
+  DateTime _getAlarmDateTime(int hours, int minutes, int seconds) {
+    final DateTime now = DateTime.now();
+    final DateTime alarm = DateTime(now.year, now.month, now.day, hours, minutes, seconds);
+
+    // if alarm is before now, set to tomorrow
+    if (alarm.isBefore(now)) {
+      return alarm.add(const Duration(days: 1));
+    }
+
+    return alarm;
   }
 }
