@@ -14,3 +14,7 @@ double radiansToPercentage(double radians) {
 }
 
 int percentageToValue(double percentage, int intervals) => ((percentage * intervals) / 100).round();
+
+extension MathExtension on num {
+  double get degrees => 2 * pi / 360 * this;
+}

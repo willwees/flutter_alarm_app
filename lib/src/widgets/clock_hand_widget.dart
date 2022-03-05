@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/constants/app_colors.dart';
 import 'package:flutter_alarm_app/src/constants/device_properties.dart';
-import 'package:flutter_alarm_app/src/utils/gesture_helper.dart';
+import 'package:flutter_alarm_app/src/utils/math_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ClockHandWidget extends StatelessWidget {
