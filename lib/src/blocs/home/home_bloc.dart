@@ -7,13 +7,13 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState(alarmDateTime: DateTime(1900))) {
-    on<HomeUpdateClockEvent>(_setClock);
+    on<HomeUpdateClockEvent>(_updateClock);
     on<HomeSaveAlarmEvent>(_saveAlarm);
     on<HomeChangeClockModeEvent>(_changeClockMode);
   }
 
   /// Called on [HomeUpdateClockEvent]
-  void _setClock(HomeUpdateClockEvent event, Emitter<HomeState> emit) {
+  void _updateClock(HomeUpdateClockEvent event, Emitter<HomeState> emit) {
     switch (event.clockType) {
       case ClockType.hours:
         if (state.clockMode == ClockMode.modeAM) {

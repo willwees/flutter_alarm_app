@@ -55,92 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                BlocBuilder<HomeBloc, HomeState>(
-                  bloc: _homeBloc,
-                  buildWhen: (HomeState previous, HomeState current) => previous.clockMode != current.clockMode,
-                  builder: (_, HomeState state) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modeAM)),
-                          child: Container(
-                            padding: EdgeInsets.all(8.0.w),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 2.0),
-                              borderRadius: BorderRadius.horizontal(left: Radius.circular(14.0.r)),
-                              color: state.clockMode == ClockMode.modeAM ? Colors.green : null,
-                            ),
-                            child: Text(
-                              'AM',
-                              style: TextStyle(
-                                fontSize: 40.0.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modePM)),
-                          child: Container(
-                            padding: EdgeInsets.all(8.0.w),
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 2.0),
-                              borderRadius: BorderRadius.horizontal(right: Radius.circular(14.0.r)),
-                              color: state.clockMode == ClockMode.modePM ? Colors.green : null,
-                            ),
-                            child: Text(
-                              'PM',
-                              style: TextStyle(
-                                fontSize: 40.0.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                _buildClockModeSection(),
                 SizedBox(height: 48.0.w),
-                BlocBuilder<HomeBloc, HomeState>(
-                  bloc: _homeBloc,
-                  builder: (_, HomeState state) {
-                    return ClockWidget(
-                      hours: state.hours,
-                      minutes: state.minutes,
-                      seconds: state.seconds,
-                      onHourPanUpdate: (int newHours) =>
-                          _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.hours, newValue: newHours)),
-                      onMinutesPanUpdate: (int newMinutes) =>
-                          _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
-                      onSecondsPanUpdate: (int newSeconds) =>
-                          _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
-                    );
-                  },
-                ),
+                _buildMainClockSection(),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(8.0.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () => _homeBloc.add(HomeSaveAlarmEvent()),
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(20.0.w),
-                child: const Text('Save'),
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: _buildSaveButton(),
     );
   }
 
@@ -152,5 +75,98 @@ class _HomeScreenState extends State<HomeScreen> {
     kDevicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     kDevicePhysicalWidth = kDeviceLogicalWidth * kDevicePixelRatio;
     kDevicePhysicalHeight = kDeviceLogicalHeight * kDevicePixelRatio;
+  }
+
+  Widget _buildClockModeSection() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      bloc: _homeBloc,
+      buildWhen: (HomeState previous, HomeState current) => previous.clockMode != current.clockMode,
+      builder: (_, HomeState state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // AM
+            InkWell(
+              onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modeAM)),
+              child: Container(
+                padding: EdgeInsets.all(8.0.w),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2.0),
+                  borderRadius: BorderRadius.horizontal(left: Radius.circular(14.0.r)),
+                  color: state.clockMode == ClockMode.modeAM ? Colors.green : null,
+                ),
+                child: Text(
+                  'AM',
+                  style: TextStyle(
+                    fontSize: 40.0.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            // PM
+            InkWell(
+              onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modePM)),
+              child: Container(
+                padding: EdgeInsets.all(8.0.w),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2.0),
+                  borderRadius: BorderRadius.horizontal(right: Radius.circular(14.0.r)),
+                  color: state.clockMode == ClockMode.modePM ? Colors.green : null,
+                ),
+                child: Text(
+                  'PM',
+                  style: TextStyle(
+                    fontSize: 40.0.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildMainClockSection() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      bloc: _homeBloc,
+      buildWhen: (HomeState previous, HomeState current) =>
+          previous.hours != current.hours || previous.minutes != current.minutes || previous.seconds != current.seconds,
+      builder: (_, HomeState state) {
+        return ClockWidget(
+          hours: state.hours,
+          minutes: state.minutes,
+          seconds: state.seconds,
+          onHourPanUpdate: (int newHours) =>
+              _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.hours, newValue: newHours)),
+          onMinutesPanUpdate: (int newMinutes) =>
+              _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
+          onSecondsPanUpdate: (int newSeconds) =>
+              _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
+        );
+      },
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return Padding(
+      padding: EdgeInsets.all(8.0.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: () => _homeBloc.add(HomeSaveAlarmEvent()),
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(20.0.w),
+              child: const Text('Save'),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
