@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_alarm_app/src/model/notification_payload_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'home_event.dart';
@@ -6,7 +7,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeState(alarmDateTime: DateTime(1900))) {
+  HomeBloc() : super(const HomeState()) {
     on<HomeUpdateClockEvent>(_updateClock);
     on<HomeSaveAlarmEvent>(_saveAlarm);
     on<HomeChangeClockModeEvent>(_changeClockMode);
@@ -36,7 +37,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _saveAlarm(HomeSaveAlarmEvent event, Emitter<HomeState> emit) {
     final DateTime alarmDateTime = _getAlarmDateTime(state.hours, state.minutes, state.seconds);
 
-    emit(state.copyWith(isSaved: true, alarmDateTime: alarmDateTime));
+    emit(
+      state.copyWith(
+        isSaved: true,
+        alarmDateTime: alarmDateTime,
+        notificationPayloadModel: NotificationPayloadModel(
+          path: '/detail',
+          alarmDateTimeString: alarmDateTime.toString(),
+        ),
+      ),
+    );
 
     // reset to false
     emit(state.copyWith(isSaved: false));

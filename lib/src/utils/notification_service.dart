@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_alarm_app/src/app.dart';
+import 'package:flutter_alarm_app/src/model/notification_payload_model.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -78,7 +81,10 @@ Future<void> selectNotification(String? payload) async {
     return;
   }
 
-  navigatorKey.currentState?.pushNamed(payload);
+  final NotificationPayloadModel notificationPayloadModel =
+      NotificationPayloadModel.fromJson(jsonDecode(payload) as Map<String, dynamic>);
+  navigatorKey.currentState
+      ?.pushNamed(notificationPayloadModel.path, arguments: notificationPayloadModel.alarmDateTimeString);
 }
 
 Future<void> runNotificationAfterAppIsTerminated() async {
@@ -88,7 +94,11 @@ Future<void> runNotificationAfterAppIsTerminated() async {
   if (details?.didNotificationLaunchApp == true) {
     if (details!.payload != null) {
       print('payload: ${details.payload}');
-      navigatorKey.currentState?.pushNamed(details.payload!);
+
+      final NotificationPayloadModel notificationPayloadModel =
+          NotificationPayloadModel.fromJson(jsonDecode(details.payload!) as Map<String, dynamic>);
+      navigatorKey.currentState
+          ?.pushNamed(notificationPayloadModel.path, arguments: notificationPayloadModel.alarmDateTimeString);
     }
   }
 }

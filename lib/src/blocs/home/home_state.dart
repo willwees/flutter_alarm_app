@@ -6,15 +6,17 @@ class HomeState extends Equatable {
   final int hours;
   final int minutes;
   final int seconds;
-  final DateTime alarmDateTime;
+  final DateTime? alarmDateTime;
   final bool isSaved;
+  final NotificationPayloadModel? notificationPayloadModel;
   final ClockMode clockMode;
 
   const HomeState({
     this.hours = 0,
     this.minutes = 0,
     this.seconds = 0,
-    required this.alarmDateTime,
+    this.alarmDateTime,
+    this.notificationPayloadModel,
     this.isSaved = false,
     this.clockMode = ClockMode.modeAM,
   });
@@ -24,6 +26,7 @@ class HomeState extends Equatable {
     int? minutes,
     int? seconds,
     DateTime? alarmDateTime,
+    NotificationPayloadModel? notificationPayloadModel,
     bool? isSaved,
     ClockMode? clockMode,
   }) {
@@ -32,17 +35,19 @@ class HomeState extends Equatable {
       minutes: minutes ?? this.minutes,
       seconds: seconds ?? this.seconds,
       alarmDateTime: alarmDateTime ?? this.alarmDateTime,
+      notificationPayloadModel: notificationPayloadModel ?? this.notificationPayloadModel,
       isSaved: isSaved ?? this.isSaved,
       clockMode: clockMode ?? this.clockMode,
     );
   }
 
   @override
-  List<Object> get props => <Object>[
+  List<Object?> get props => <Object?>[
         hours,
         minutes,
         seconds,
         alarmDateTime,
+        notificationPayloadModel,
         isSaved,
         clockMode,
       ];
@@ -53,7 +58,8 @@ class HomeState extends Equatable {
         'hours: $hours, '
         'minutes: $minutes, '
         'seconds: $seconds, '
-        'alarmDateTime: $alarmDateTime, '
+        'alarmDateTime: $alarmDateTime, \n'
+        'notificationPayloadModel: $notificationPayloadModel, \n'
         'isSaved: $isSaved, '
         'clockMode: $clockMode, '
         '}';
