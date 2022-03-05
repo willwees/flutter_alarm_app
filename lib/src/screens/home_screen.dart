@@ -5,6 +5,7 @@ import 'package:flutter_alarm_app/src/utils/notification_service.dart';
 import 'package:flutter_alarm_app/src/widgets/clock_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -38,6 +39,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   dateTime: state.alarmDateTime,
                   payload: '/detail',
                 );
+                
+                // show snackbar
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Alarm scheduled for ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime.toLocal())}',
+                      ),
+                    ),
+                  );
               }
             },
             builder: (_, HomeState state) {
