@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/blocs/home/home_bloc.dart';
 import 'package:flutter_alarm_app/src/constants/device_properties.dart';
+import 'package:flutter_alarm_app/src/utils/notification_service.dart';
 import 'package:flutter_alarm_app/src/widgets/clock_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,12 +14,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final NotificationService _notificationService = NotificationService();
   final HomeBloc _homeBloc = HomeBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationService.scheduleNotifications(payload: '/');
+  }
 
   @override
   Widget build(BuildContext context) {
     _setConstants(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Alarm App'),
