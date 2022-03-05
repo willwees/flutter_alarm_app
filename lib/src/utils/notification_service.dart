@@ -16,10 +16,9 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings();
-
     const InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
@@ -31,9 +30,9 @@ class NotificationService {
   }
 
   final AndroidNotificationDetails _androidNotificationDetails = const AndroidNotificationDetails(
-    'channel ID',
-    'channel NAME',
-    channelDescription: 'CHANNEL DESCRIPTION',
+    '0',
+    'Alarm',
+    channelDescription: 'Alarm triggered',
     priority: Priority.high,
     importance: Importance.max,
   );
