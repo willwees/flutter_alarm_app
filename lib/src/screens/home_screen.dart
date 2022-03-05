@@ -14,12 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    kDeviceSize = MediaQuery.of(context).size;
-    kDeviceLogicalWidth = MediaQuery.of(context).size.width;
-    kDeviceLogicalHeight = MediaQuery.of(context).size.height;
-    kDevicePixelRatio = MediaQuery.of(context).devicePixelRatio;
-    kDevicePhysicalWidth = kDeviceLogicalWidth * kDevicePixelRatio;
-    kDevicePhysicalHeight = kDeviceLogicalHeight * kDevicePixelRatio;
+    _setConstants(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,5 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  /// Set initial constants
+  void _setConstants(BuildContext context) {
+    kDeviceSize = MediaQuery.of(context).size;
+    kDeviceLogicalWidth = MediaQuery.of(context).size.width;
+    kDeviceLogicalHeight = MediaQuery.of(context).size.height;
+    kDevicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    kDevicePhysicalWidth = kDeviceLogicalWidth * kDevicePixelRatio;
+    kDevicePhysicalHeight = kDeviceLogicalHeight * kDevicePixelRatio;
   }
 }
