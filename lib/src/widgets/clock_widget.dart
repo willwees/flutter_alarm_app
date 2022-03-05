@@ -7,7 +7,22 @@ import 'package:flutter_alarm_app/src/widgets/clock_second_hand_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ClockWidget extends StatelessWidget {
-  const ClockWidget({Key? key}) : super(key: key);
+  final int hours;
+  final int minutes;
+  final int seconds;
+  final Function(int newHours) onHourPanUpdate;
+  final Function(int newMinutes) onMinutesPanUpdate;
+  final Function(int newSeconds) onSecondsPanUpdate;
+
+  const ClockWidget({
+    Key? key,
+    required this.hours,
+    required this.minutes,
+    required this.seconds,
+    required this.onHourPanUpdate,
+    required this.onMinutesPanUpdate,
+    required this.onSecondsPanUpdate,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
