@@ -80,3 +80,15 @@ Future<void> selectNotification(String? payload) async {
 
   navigatorKey.currentState?.pushNamed(payload);
 }
+
+Future<void> runNotificationAfterAppIsTerminated() async {
+  final NotificationAppLaunchDetails? details =
+      await NotificationService().flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+  if (details?.didNotificationLaunchApp == true) {
+    if (details!.payload != null) {
+      print('payload: ${details.payload}');
+      navigatorKey.currentState?.pushNamed(details.payload!);
+    }
+  }
+}
