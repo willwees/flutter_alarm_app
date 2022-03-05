@@ -18,12 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeBloc _homeBloc = HomeBloc();
 
   @override
-  void initState() {
-    super.initState();
-    _notificationService.scheduleNotifications(payload: '/');
-  }
-
-  @override
   Widget build(BuildContext context) {
     _setConstants(context);
     return Scaffold(
@@ -33,19 +27,46 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(8.0.w),
-          child: BlocBuilder<HomeBloc, HomeState>(
+          child: BlocConsumer<HomeBloc, HomeState>(
             bloc: _homeBloc,
+            listenWhen: (HomeState previous, HomeState current) => previous.isSaved != current.isSaved,
+            listener: (BuildContext context, HomeState state) {
+              if (state.isSaved) {
+                _notificationService.scheduleNotifications(
+                  title: 'Alarm triggered!',
+                  body: 'h: ${state.hours}, m: ${state.minutes}, s: ${state.seconds}',
+                  payload: '/detail',
+                );
+              }
+            },
             builder: (_, HomeState state) {
-              return ClockWidget(
-                hours: state.hours,
-                minutes: state.minutes,
-                seconds: state.seconds,
-                onHourPanUpdate: (int newHours) =>
-                    _homeBloc.add(HomeSetClockEvent(clockType: ClockType.hours, newValue: newHours)),
-                onMinutesPanUpdate: (int newMinutes) =>
-                    _homeBloc.add(HomeSetClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
-                onSecondsPanUpdate: (int newSeconds) =>
-                    _homeBloc.add(HomeSetClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
+              return Column(
+                children: <Widget>[
+                  SizedBox(height: 24.0.w),
+                  // Clock
+                  ClockWidget(
+                    hours: state.hours,
+                    minutes: state.minutes,
+                    seconds: state.seconds,
+                    onHourPanUpdate: (int newHours) =>
+                        _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.hours, newValue: newHours)),
+                    onMinutesPanUpdate: (int newMinutes) =>
+                        _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
+                    onSecondsPanUpdate: (int newSeconds) =>
+                        _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
+                  ),
+                  SizedBox(height: 24.0.w),
+                  // Save Button
+                  ElevatedButton(
+                    onPressed: () => _homeBloc.add(HomeSaveAlarmEvent()),
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(20.0.w),
+                      child: const Text('Save'),
+                    ),
+                  ),
+                ],
               );
             },
           ),

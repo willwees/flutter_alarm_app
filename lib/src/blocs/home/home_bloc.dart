@@ -7,10 +7,11 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const HomeState()) {
-    on<HomeSetClockEvent>(_setClock);
+    on<HomeUpdateClockEvent>(_setClock);
+    on<HomeSaveAlarmEvent>(_saveAlarm);
   }
 
-  void _setClock(HomeSetClockEvent event, Emitter<HomeState> emit) {
+  void _setClock(HomeUpdateClockEvent event, Emitter<HomeState> emit) {
     switch (event.clockType) {
       case ClockType.hours:
         emit(state.copyWith(hours: event.newValue));
@@ -22,5 +23,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(state.copyWith(seconds: event.newValue));
         break;
     }
+  }
+
+  void _saveAlarm(HomeSaveAlarmEvent event, Emitter<HomeState> emit) {
+    emit(state.copyWith(isSaved: true));
+
+    // reset to false
+    emit(state.copyWith(isSaved: false));
   }
 }
