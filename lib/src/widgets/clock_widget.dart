@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/constants/app_colors.dart';
 import 'package:flutter_alarm_app/src/utils/painter/clock_dial_painter.dart';
-import 'package:flutter_alarm_app/src/widgets/clock_hour_hand_widget.dart';
-import 'package:flutter_alarm_app/src/widgets/clock_minute_hand_widget.dart';
-import 'package:flutter_alarm_app/src/widgets/clock_second_hand_widget.dart';
+import 'package:flutter_alarm_app/src/widgets/clock_hand_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ClockWidget extends StatelessWidget {
@@ -122,9 +120,9 @@ class ClockWidget extends StatelessWidget {
         width: double.infinity,
         child: Stack(
           children: <Widget>[
-            ClockHourHandWidget(hours: hours, onPanUpdate: onHourPanUpdate),
-            ClockMinuteHandWidget(minutes: minutes, onPanUpdate: onMinutesPanUpdate),
-            ClockSecondHandWidget(seconds: seconds, onPanUpdate: onSecondsPanUpdate),
+            ClockHandWidget.hours(value: hours, onPanUpdate: onHourPanUpdate),
+            ClockHandWidget.minutes(value: minutes, onPanUpdate: onMinutesPanUpdate),
+            ClockHandWidget.seconds(value: seconds, onPanUpdate: onSecondsPanUpdate),
           ],
         ),
       ),
