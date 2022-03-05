@@ -121,8 +121,8 @@ class ClockWidget extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Stack(
-          children: const <Widget>[
-            ClockHourHandWidget(),
+          children: <Widget>[
+            ClockHourHandWidget(hours: hours, onPanUpdate: onHourPanUpdate),
             ClockMinuteHandWidget(),
             ClockSecondHandWidget(),
           ],
