@@ -20,4 +20,10 @@ class DateHelper {
     final String dateString = dateFormat.format(dateTime.toLocal());
     return dateString;
   }
+
+  /// Convert number to thousand separator
+  static String numberToThousandSeparatorFormat(num number) {
+    final String _formattedNumber = NumberFormat('#,###').format(number);
+    return _formattedNumber;
+  }
 }
