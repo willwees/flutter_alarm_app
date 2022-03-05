@@ -35,11 +35,11 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state.isSaved) {
                 _notificationService.scheduleNotifications(
                   title: 'Alarm triggered!',
-                  body: 'h: ${state.hours}, m: ${state.minutes}, s: ${state.seconds}',
+                  body: 'Alarm triggered at ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime.toLocal())}',
                   dateTime: state.alarmDateTime,
                   payload: '/detail',
                 );
-                
+
                 // show snackbar
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             builder: (_, HomeState state) {
               return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: 24.0.w),
                   // Clock
@@ -68,21 +69,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSecondsPanUpdate: (int newSeconds) =>
                         _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
                   ),
-                  SizedBox(height: 48.0.w),
-                  // Save Button
-                  ElevatedButton(
-                    onPressed: () => _homeBloc.add(HomeSaveAlarmEvent()),
-                    child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.all(20.0.w),
-                      child: const Text('Save'),
-                    ),
-                  ),
                 ],
               );
             },
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(8.0.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () => _homeBloc.add(HomeSaveAlarmEvent()),
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(20.0.w),
+                child: const Text('Save'),
+              ),
+            ),
+          ],
         ),
       ),
     );
