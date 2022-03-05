@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app/src/screens/detail_screen.dart';
 import 'package:flutter_alarm_app/src/screens/home_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,7 +26,7 @@ class _AppState extends State<App> {
         initialRoute: '/',
         routes: <String, Widget Function(BuildContext)>{
           '/': (BuildContext context) => const HomeScreen(),
-          '/detail': (BuildContext context) => const HomeScreen(),
+          '/detail': (BuildContext context) => const DetailScreen(),
         },
       ),
     );
