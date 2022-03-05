@@ -7,7 +7,7 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? dateTimeString = ModalRoute.of(context)?.settings.arguments as String?;
-    print('dateTimeString: $dateTimeString');
+    debugPrint('dateTimeString: $dateTimeString');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Alarm App'),

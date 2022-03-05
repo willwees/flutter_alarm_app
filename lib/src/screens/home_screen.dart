@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/blocs/home/home_bloc.dart';
 import 'package:flutter_alarm_app/src/constants/device_properties.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
-import 'package:flutter_alarm_app/src/utils/notification_service.dart';
+import 'package:flutter_alarm_app/src/utils/notification_helper.dart';
 import 'package:flutter_alarm_app/src/widgets/clock_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,13 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final NotificationService _notificationService = NotificationService();
+  final NotificationHelper _notificationHelper = NotificationHelper();
   final HomeBloc _homeBloc = HomeBloc();
 
   @override
   void initState() {
     super.initState();
-    runNotificationAfterAppIsTerminated();
+    _notificationHelper.runNotificationAfterAppIsTerminated();
   }
 
   @override
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         listenWhen: (HomeState previous, HomeState current) => previous.isSaved != current.isSaved,
         listener: (BuildContext context, HomeState state) {
           if (state.isSaved) {
-            _notificationService.scheduleNotifications(
+            _notificationHelper.scheduleNotifications(
               title: 'Alarm triggered!',
               body: 'Alarm triggered at ${DateHelper.dateTimeToString(state.alarmDateTime!)}',
               dateTime: state.alarmDateTime!,
