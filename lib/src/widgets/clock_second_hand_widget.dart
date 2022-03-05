@@ -6,34 +6,22 @@ import 'package:flutter_alarm_app/src/constants/device_properties.dart';
 import 'package:flutter_alarm_app/src/utils/gesture_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ClockSecondHandWidget extends StatefulWidget {
+class ClockSecondHandWidget extends StatelessWidget {
   final int seconds;
+  final Function(int) onPanUpdate;
 
-  const ClockSecondHandWidget({
+  ClockSecondHandWidget({
     Key? key,
-    this.seconds = 50,
+    required this.seconds,
+    required this.onPanUpdate,
   }) : super(key: key);
 
-  @override
-  State<ClockSecondHandWidget> createState() => _ClockSecondHandWidgetState();
-}
-
-class _ClockSecondHandWidgetState extends State<ClockSecondHandWidget> {
   final double _padding = 48.0.w;
   final double _clockHandWidth = 4.0.w;
   final double _clockHandInvisibleWidth = 20.0.w; // so user can tap more easily.
   final double _clockHandHeight = 280.0.w;
   final double _pivot = 90.0.w;
-  late final double _centerOffsetCoord;
-  late int _seconds;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _centerOffsetCoord = kDeviceLogicalWidth / 2 - (_padding + _clockHandInvisibleWidth / 2);
-    _seconds = widget.seconds;
-  }
+  late final double _centerOffsetCoord = kDeviceLogicalWidth / 2 - (_padding + _clockHandInvisibleWidth / 2);
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +31,11 @@ class _ClockSecondHandWidgetState extends State<ClockSecondHandWidget> {
         _centerOffsetCoord - (_clockHandInvisibleWidth + _clockHandHeight) / 2 - _pivot + _clockHandInvisibleWidth,
       ),
       child: Transform.rotate(
-        angle: 2 * pi * (_seconds / 60),
+        angle: 2 * pi * (seconds / 60),
         origin: Offset(0.0, _pivot),
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onPanUpdate: _onPanUpdate,
-          onPanEnd: _onPanEnd,
+          onPanUpdate: (DragUpdateDetails details) => _onPanUpdate(details, context),
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -69,7 +56,7 @@ class _ClockSecondHandWidgetState extends State<ClockSecondHandWidget> {
     );
   }
 
-  void _onPanUpdate(DragUpdateDetails details) {
+  void _onPanUpdate(DragUpdateDetails details, BuildContext context) {
     // get cursor position
     final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
     final Offset? position = renderBox?.globalToLocal(details.globalPosition);
@@ -82,13 +69,6 @@ class _ClockSecondHandWidgetState extends State<ClockSecondHandWidget> {
     final double percentage = radiansToPercentage(angle);
     final int newValue = percentageToValue(percentage, 60);
 
-    setState(() {
-      _seconds = newValue;
-    });
-  }
-
-  void _onPanEnd(_) {
-    print('panEnd!');
-    //TODO: call event
+    onPanUpdate(newValue);
   }
 }
