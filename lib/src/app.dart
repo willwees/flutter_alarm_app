@@ -23,10 +23,15 @@ class _AppState extends State<App> {
           primarySwatch: Colors.blue,
         ),
         navigatorKey: navigatorKey,
-        initialRoute: '/',
+        initialRoute: '/detail',
         routes: <String, Widget Function(BuildContext)>{
           '/': (BuildContext context) => const HomeScreen(),
-          '/detail': (BuildContext context) => const DetailScreen(),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          if(settings.name == '/detail'){
+            final String? arguments = settings.arguments as String?;
+            return MaterialPageRoute<dynamic>(builder: (BuildContext context) => DetailScreen(arguments: arguments));
+          }
         },
       ),
     );

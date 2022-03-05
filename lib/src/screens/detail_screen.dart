@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 
-class DetailScreen extends StatelessWidget {
-  const DetailScreen({Key? key}) : super(key: key);
+class DetailScreen extends StatefulWidget {
+  final String? arguments;
+
+  const DetailScreen({Key? key, required this.arguments}) : super(key: key);
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late final String? _dateTimeString;
+
+  @override
+  void initState() {
+    super.initState();
+    _dateTimeString = widget.arguments;
+    debugPrint('dateTimeString: $_dateTimeString');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String? dateTimeString = ModalRoute.of(context)?.settings.arguments as String?;
-    debugPrint('dateTimeString: $dateTimeString');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Alarm App'),
@@ -15,8 +29,8 @@ class DetailScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            if (dateTimeString != null)
-              Text('Alarm At: ${DateHelper.dateTimeToString(DateTime.parse(dateTimeString))}'),
+            if (_dateTimeString != null)
+              Text('Alarm At: ${DateHelper.dateTimeToString(DateTime.parse(_dateTimeString!))}'),
             Text('Now: ${DateHelper.dateTimeToString(DateTime.now())}'),
           ],
         ),
