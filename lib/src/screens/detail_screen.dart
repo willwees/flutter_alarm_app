@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({Key? key}) : super(key: key);
@@ -16,8 +16,8 @@ class DetailScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             if (dateTimeString != null)
-              Text('Alarm At: ${DateFormat('dd MMM yyyy hh:mm:ss a').format(DateTime.parse(dateTimeString))}'),
-            Text('Now: ${DateFormat('dd MMM yyyy hh:mm:ss a').format(DateTime.now())}'),
+              Text('Alarm At: ${DateHelper.dateTimeToString(DateTime.parse(dateTimeString))}'),
+            Text('Now: ${DateHelper.dateTimeToString(DateTime.now())}'),
           ],
         ),
       ),

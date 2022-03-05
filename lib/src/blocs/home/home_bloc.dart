@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_alarm_app/src/model/notification_payload_model.dart';
+import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'home_event.dart';
@@ -35,7 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   /// Called on [HomeSaveAlarmEvent]
   void _saveAlarm(HomeSaveAlarmEvent event, Emitter<HomeState> emit) {
-    final DateTime alarmDateTime = _getAlarmDateTime(state.hours, state.minutes, state.seconds);
+    final DateTime alarmDateTime = DateHelper.getAlarmDateTime(state.hours, state.minutes, state.seconds);
 
     emit(
       state.copyWith(
@@ -50,18 +51,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     // reset to false
     emit(state.copyWith(isSaved: false));
-  }
-
-  DateTime _getAlarmDateTime(int hours, int minutes, int seconds) {
-    final DateTime now = DateTime.now();
-    final DateTime alarm = DateTime(now.year, now.month, now.day, hours, minutes, seconds);
-
-    // if alarm is before now, set to tomorrow
-    if (alarm.isBefore(now)) {
-      return alarm.add(const Duration(days: 1));
-    }
-
-    return alarm;
   }
 
   /// Called on [HomeChangeClockModeEvent]

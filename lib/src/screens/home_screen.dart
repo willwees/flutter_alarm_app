@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/blocs/home/home_bloc.dart';
 import 'package:flutter_alarm_app/src/constants/device_properties.dart';
+import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_alarm_app/src/utils/notification_service.dart';
 import 'package:flutter_alarm_app/src/widgets/clock_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state.isSaved) {
             _notificationService.scheduleNotifications(
               title: 'Alarm triggered!',
-              body: 'Alarm triggered at ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime!.toLocal())}',
+              body: 'Alarm triggered at ${DateHelper.dateTimeToString(state.alarmDateTime!)}',
               dateTime: state.alarmDateTime!,
               payload: jsonEncode(state.notificationPayloadModel!.toJson()), // encode the payload to json
             );
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ..showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Alarm scheduled for ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime!.toLocal())}',
+                    'Alarm scheduled for ${DateHelper.dateTimeToString(state.alarmDateTime!)}',
                   ),
                 ),
               );
