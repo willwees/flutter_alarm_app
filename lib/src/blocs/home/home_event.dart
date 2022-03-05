@@ -23,3 +23,14 @@ class HomeUpdateClockEvent extends HomeEvent {
 }
 
 class HomeSaveAlarmEvent extends HomeEvent {}
+
+class HomeChangeClockModeEvent extends HomeEvent {
+  final ClockMode clockMode;
+
+  const HomeChangeClockModeEvent({
+    required this.clockMode,
+  });
+
+  @override
+  List<Object?> get props => <Object>[clockMode];
+}

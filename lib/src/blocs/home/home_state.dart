@@ -1,11 +1,14 @@
 part of 'home_bloc.dart';
 
+enum ClockMode { modeAM, modePM }
+
 class HomeState extends Equatable {
   final int hours;
   final int minutes;
   final int seconds;
   final DateTime alarmDateTime;
   final bool isSaved;
+  final ClockMode clockMode;
 
   const HomeState({
     this.hours = 0,
@@ -13,6 +16,7 @@ class HomeState extends Equatable {
     this.seconds = 0,
     required this.alarmDateTime,
     this.isSaved = false,
+    this.clockMode = ClockMode.modeAM,
   });
 
   HomeState copyWith({
@@ -21,6 +25,7 @@ class HomeState extends Equatable {
     int? seconds,
     DateTime? alarmDateTime,
     bool? isSaved,
+    ClockMode? clockMode,
   }) {
     return HomeState(
       hours: hours ?? this.hours,
@@ -28,6 +33,7 @@ class HomeState extends Equatable {
       seconds: seconds ?? this.seconds,
       alarmDateTime: alarmDateTime ?? this.alarmDateTime,
       isSaved: isSaved ?? this.isSaved,
+      clockMode: clockMode ?? this.clockMode,
     );
   }
 
@@ -38,6 +44,7 @@ class HomeState extends Equatable {
         seconds,
         alarmDateTime,
         isSaved,
+        clockMode,
       ];
 
   @override
@@ -48,6 +55,7 @@ class HomeState extends Equatable {
         'seconds: $seconds, '
         'alarmDateTime: $alarmDateTime, '
         'isSaved: $isSaved, '
+        'clockMode: $clockMode, '
         '}';
   }
 }

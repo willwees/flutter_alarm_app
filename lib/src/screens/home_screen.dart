@@ -25,53 +25,102 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Alarm App'),
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(8.0.w),
-          child: BlocConsumer<HomeBloc, HomeState>(
-            bloc: _homeBloc,
-            listenWhen: (HomeState previous, HomeState current) => previous.isSaved != current.isSaved,
-            listener: (BuildContext context, HomeState state) {
-              if (state.isSaved) {
-                _notificationService.scheduleNotifications(
-                  title: 'Alarm triggered!',
-                  body: 'Alarm triggered at ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime.toLocal())}',
-                  dateTime: state.alarmDateTime,
-                  payload: '/detail',
-                );
+      body: BlocListener<HomeBloc, HomeState>(
+        bloc: _homeBloc,
+        listenWhen: (HomeState previous, HomeState current) => previous.isSaved != current.isSaved,
+        listener: (BuildContext context, HomeState state) {
+          if (state.isSaved) {
+            _notificationService.scheduleNotifications(
+              title: 'Alarm triggered!',
+              body: 'Alarm triggered at ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime.toLocal())}',
+              dateTime: state.alarmDateTime,
+              payload: '/detail',
+            );
 
-                // show snackbar
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Alarm scheduled for ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime.toLocal())}',
-                      ),
-                    ),
-                  );
-              }
-            },
-            builder: (_, HomeState state) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 24.0.w),
-                  // Clock
-                  ClockWidget(
-                    hours: state.hours,
-                    minutes: state.minutes,
-                    seconds: state.seconds,
-                    onHourPanUpdate: (int newHours) =>
-                        _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.hours, newValue: newHours)),
-                    onMinutesPanUpdate: (int newMinutes) =>
-                        _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
-                    onSecondsPanUpdate: (int newSeconds) =>
-                        _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
+            // show snackbar
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Alarm scheduled for ${DateFormat('dd MMM yyyy hh:mm:ss a').format(state.alarmDateTime.toLocal())}',
                   ),
-                ],
+                ),
               );
-            },
+          }
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(8.0.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                BlocBuilder<HomeBloc, HomeState>(
+                  bloc: _homeBloc,
+                  buildWhen: (HomeState previous, HomeState current) => previous.clockMode != current.clockMode,
+                  builder: (_, HomeState state) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modeAM)),
+                          child: Container(
+                            padding: EdgeInsets.all(8.0.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2.0),
+                              borderRadius: BorderRadius.horizontal(left: Radius.circular(14.0.r)),
+                              color: state.clockMode == ClockMode.modeAM ? Colors.green : null,
+                            ),
+                            child: Text(
+                              'AM',
+                              style: TextStyle(
+                                fontSize: 40.0.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modePM)),
+                          child: Container(
+                            padding: EdgeInsets.all(8.0.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2.0),
+                              borderRadius: BorderRadius.horizontal(right: Radius.circular(14.0.r)),
+                              color: state.clockMode == ClockMode.modePM ? Colors.green : null,
+                            ),
+                            child: Text(
+                              'PM',
+                              style: TextStyle(
+                                fontSize: 40.0.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                SizedBox(height: 48.0.w),
+                BlocBuilder<HomeBloc, HomeState>(
+                  bloc: _homeBloc,
+                  builder: (_, HomeState state) {
+                    return ClockWidget(
+                      hours: state.hours,
+                      minutes: state.minutes,
+                      seconds: state.seconds,
+                      onHourPanUpdate: (int newHours) =>
+                          _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.hours, newValue: newHours)),
+                      onMinutesPanUpdate: (int newMinutes) =>
+                          _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
+                      onSecondsPanUpdate: (int newSeconds) =>
+                          _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

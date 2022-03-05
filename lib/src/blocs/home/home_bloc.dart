@@ -9,12 +9,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeState(alarmDateTime: DateTime(1900))) {
     on<HomeUpdateClockEvent>(_setClock);
     on<HomeSaveAlarmEvent>(_saveAlarm);
+    on<HomeChangeClockModeEvent>(_changeClockMode);
   }
 
+  /// Called on [HomeUpdateClockEvent]
   void _setClock(HomeUpdateClockEvent event, Emitter<HomeState> emit) {
     switch (event.clockType) {
       case ClockType.hours:
-        emit(state.copyWith(hours: event.newValue));
+        if (state.clockMode == ClockMode.modeAM) {
+          emit(state.copyWith(hours: event.newValue));
+        } else {
+          // mode PM
+          emit(state.copyWith(hours: event.newValue + 12));
+        }
         break;
       case ClockType.minutes:
         emit(state.copyWith(minutes: event.newValue));
@@ -25,6 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  /// Called on [HomeSaveAlarmEvent]
   void _saveAlarm(HomeSaveAlarmEvent event, Emitter<HomeState> emit) {
     final DateTime alarmDateTime = _getAlarmDateTime(state.hours, state.minutes, state.seconds);
 
@@ -44,5 +52,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     return alarm;
+  }
+
+  /// Called on [HomeChangeClockModeEvent]
+  void _changeClockMode(HomeChangeClockModeEvent event, Emitter<HomeState> emit) {
+    // discard if it is the same event
+    if (state.clockMode == event.clockMode) {
+      return;
+    }
+
+    late final int newHours;
+    if (event.clockMode == ClockMode.modeAM) {
+      newHours = state.hours - 12;
+    } else {
+      newHours = state.hours + 12;
+    }
+
+    emit(
+      state.copyWith(
+        clockMode: event.clockMode,
+        hours: newHours,
+      ),
+    );
   }
 }
