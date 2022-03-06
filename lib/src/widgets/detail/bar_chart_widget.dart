@@ -71,6 +71,7 @@ class _BarChartWidgetState extends State<BarChartWidget> with TickerProviderStat
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
+            // Bar Axis
             CustomPaint(
               painter: BarAxisPainter(
                 alarmText: DateHelper.dateTimeToString(widget.alarmDateTime),
@@ -80,6 +81,7 @@ class _BarChartWidgetState extends State<BarChartWidget> with TickerProviderStat
                 arrowLineLength: _arrowLineLength,
               ),
             ),
+            // Bar Data
             CustomPaint(
               painter: BarDataPainter(
                 value: widget.alarmDiffSeconds,

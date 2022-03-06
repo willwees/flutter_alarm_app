@@ -23,7 +23,7 @@ class DateHelper {
 
   /// Convert number to thousand separator
   static String numberToThousandSeparatorFormat(num number) {
-    final String _formattedNumber = NumberFormat('#,###').format(number);
+    final String _formattedNumber = NumberFormat('#,###.#').format(number);
     return _formattedNumber;
   }
 }

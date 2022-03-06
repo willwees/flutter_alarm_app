@@ -49,7 +49,7 @@ class BarAxisPainter extends CustomPainter {
       ),
     );
     _textPainter.layout();
-    canvas.translate(_textPainter.width, 0.0);
+    canvas.translate(_textPainter.width + 24.0.w, 0.0);
 
     // Draw main line
     canvas.drawLine(Offset.zero, Offset(0.0, size.width), _linePaint);
@@ -88,7 +88,7 @@ class BarAxisPainter extends CustomPainter {
     canvas.translate(-arrowLineLength, 0.0);
 
     _textPainter.text = TextSpan(
-      text: DateHelper.numberToThousandSeparatorFormat(i * maxValue ~/ (tickCount - 1)),
+      text: DateHelper.numberToThousandSeparatorFormat(i * maxValue / (tickCount - 1)),
       style: TextStyle(
         color: AppColors.kBlack,
         fontSize: 24.0.sp,
