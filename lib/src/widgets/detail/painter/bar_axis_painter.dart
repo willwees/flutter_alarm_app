@@ -8,6 +8,7 @@ class BarAxisPainter extends CustomPainter {
   final double _lineStrokeWidth = 8.0.w;
   final double _tickStrokeWidth = 4.0.w;
   final double _tickLength = 20.0.w;
+  final int _tickCount = 6;
   final double _arrowLineLength = 30.0.w;
 
   final Paint _linePaint = Paint()..strokeCap = StrokeCap.round;
@@ -18,11 +19,11 @@ class BarAxisPainter extends CustomPainter {
   );
 
   final String alarmText;
-  final int multiplier;
+  final int maxValue;
 
   BarAxisPainter({
     required this.alarmText,
-    required this.multiplier,
+    required this.maxValue,
   });
 
   @override
@@ -38,7 +39,7 @@ class BarAxisPainter extends CustomPainter {
     canvas.save();
 
     _textPainter.text = TextSpan(
-      text: DateHelper.numberToThousandSeparatorFormat(multiplier * 5),
+      text: DateHelper.numberToThousandSeparatorFormat(maxValue),
       style: TextStyle(
         color: AppColors.kBlack,
         fontSize: 24.0.sp,
@@ -61,12 +62,12 @@ class BarAxisPainter extends CustomPainter {
 
   /// Draw Y-axis tick and number
   void _drawYAxisTickAndNumber(Canvas canvas, Size size) {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < _tickCount; i++) {
       canvas.save();
 
       // Draw tick
       final double startPoint = size.width - _arrowLineLength;
-      canvas.translate(0.0, startPoint - startPoint / 6 * i);
+      canvas.translate(0.0, startPoint - startPoint / _tickCount * i);
       canvas.drawLine(Offset(-_tickLength / 2, 0.0), Offset(_tickLength / 2, 0.0), _tickPaint);
 
       // Draw text
@@ -84,7 +85,7 @@ class BarAxisPainter extends CustomPainter {
     canvas.translate(-_arrowLineLength, 0.0);
 
     _textPainter.text = TextSpan(
-      text: DateHelper.numberToThousandSeparatorFormat(i * multiplier),
+      text: DateHelper.numberToThousandSeparatorFormat(i * maxValue ~/ (_tickCount - 1)),
       style: TextStyle(
         color: AppColors.kBlack,
         fontSize: 24.0.sp,
