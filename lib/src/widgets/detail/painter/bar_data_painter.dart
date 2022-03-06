@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BarDataPainter extends CustomPainter {
   final Paint _paint = Paint()..color = Colors.blue;
 
-  /// Used to get the Y-Axis text width
   final TextPainter _textPainter = TextPainter(
     textAlign: TextAlign.center,
     textDirection: TextDirection.ltr,
@@ -19,7 +18,6 @@ class BarDataPainter extends CustomPainter {
   final int tickCount;
   final double arrowLineLength;
 
-
   BarDataPainter({
     required this.value,
     required this.maxValue,
@@ -31,6 +29,20 @@ class BarDataPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+
+    // Determine bar width & height
+    _paint.strokeWidth = _getBarWidth();
+    final double barHeight = _getBarHeight(size);
+
+    // Draw bar
+    _drawBar(canvas, size, barHeight);
+
+    // Draw text
+    _drawText(canvas, size, barHeight);
+  }
+
+  /// Calculate bar width
+  double _getBarWidth() {
     _textPainter.text = TextSpan(
       text: DateHelper.numberToThousandSeparatorFormat(maxValue),
       style: TextStyle(
@@ -39,14 +51,19 @@ class BarDataPainter extends CustomPainter {
       ),
     );
     _textPainter.layout();
-    _paint.strokeWidth = _textPainter.width;
+    return _textPainter.width;
+  }
 
-    // Draw bar
-    _drawBar(canvas, size);
+  /// Calculate bar height
+  double _getBarHeight(Size size) {
+    final double startPoint = size.width - arrowLineLength - lineStrokeWidth;
+    final double barHeight = startPoint * valueHeightRatio * (tickCount - 1) / tickCount;
+
+    return barHeight;
   }
 
   /// Draw bar
-  void _drawBar(Canvas canvas, Size size) {
+  void _drawBar(Canvas canvas, Size size, double barHeight) {
     canvas.save();
     canvas.translate(
       size.width - (size.width - _textPainter.width) / 2,
@@ -54,8 +71,35 @@ class BarDataPainter extends CustomPainter {
     );
 
     // Draw main line
-    final double startPoint = size.width - arrowLineLength - lineStrokeWidth;
-    canvas.drawLine(Offset.zero, Offset(0.0, -startPoint * valueHeightRatio * (tickCount - 1) / tickCount), _paint);
+    canvas.drawLine(Offset.zero, Offset(0.0, -barHeight), _paint);
+
+    canvas.restore();
+  }
+
+  /// Draw text
+  void _drawText(Canvas canvas, Size size, double barHeight) {
+    canvas.save();
+    canvas.translate(
+      size.width - (size.width - _textPainter.width) / 2,
+      size.width - arrowLineLength - lineStrokeWidth / 2,
+    );
+
+    // Draw text
+    _textPainter.text = TextSpan(
+      text: DateHelper.numberToThousandSeparatorFormat(value),
+      style: TextStyle(
+        color: AppColors.kBlack,
+        fontSize: 24.0.sp,
+      ),
+    );
+    _textPainter.layout();
+    _textPainter.paint(
+      canvas,
+      Offset(
+        -(_textPainter.width / 2),
+        -_textPainter.height - barHeight,
+      ),
+    );
 
     canvas.restore();
   }
