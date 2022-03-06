@@ -35,6 +35,7 @@ class ClockWidget extends StatelessWidget {
     );
   }
 
+  /// Clock body
   Widget _buildBodyClock() {
     return Container(
       width: double.infinity,
@@ -60,6 +61,7 @@ class ClockWidget extends StatelessWidget {
     );
   }
 
+  /// Clock face
   Widget _buildFaceClock() {
     return Padding(
       padding: EdgeInsets.all(40.0.w),
@@ -102,6 +104,7 @@ class ClockWidget extends StatelessWidget {
     );
   }
 
+  /// Clock dials
   Widget _buildClockDialAndNumber() {
     return Container(
       width: double.infinity,
@@ -113,6 +116,7 @@ class ClockWidget extends StatelessWidget {
     );
   }
 
+  /// Clock hands
   Widget _buildClockHandsWidget() {
     return AspectRatio(
       aspectRatio: 1.0,
@@ -129,6 +133,7 @@ class ClockWidget extends StatelessWidget {
     );
   }
 
+  /// Center dot
   Widget _buildClockCenterDot() {
     return Center(
       child: Container(

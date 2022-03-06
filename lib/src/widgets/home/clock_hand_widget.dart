@@ -87,7 +87,7 @@ class ClockHandWidget extends StatelessWidget {
     return ClockHandWidget(
       value: value,
       onPanUpdate: onPanUpdate,
-      interval: 12,
+      interval: 12, // divide hours to 12 parts
       clockHandWidth: 20.0.w,
       clockHandInvisibleWidth: 30.0.w,
       clockHandHeight: 200.0.w,
@@ -103,7 +103,7 @@ class ClockHandWidget extends StatelessWidget {
     return ClockHandWidget(
       value: value,
       onPanUpdate: onPanUpdate,
-      interval: 60,
+      interval: 60, // divide hours to 60 parts
       clockHandWidth: 12.0.w,
       clockHandInvisibleWidth: 30.0.w,
       clockHandHeight: 280.0.w,
@@ -119,7 +119,7 @@ class ClockHandWidget extends StatelessWidget {
     return ClockHandWidget(
       value: value,
       onPanUpdate: onPanUpdate,
-      interval: 60,
+      interval: 60, // divide hours to 60 parts
       clockHandWidth: 4.0.w,
       clockHandInvisibleWidth: 30.0.w,
       clockHandHeight: 280.0.w,
