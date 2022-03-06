@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
-import 'package:flutter_alarm_app/src/utils/painter/bar_axis_painter.dart';
+import 'package:flutter_alarm_app/src/widgets/detail/painter/bar_axis_painter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BarChartWidget extends StatelessWidget {

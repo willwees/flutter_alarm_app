@@ -5,7 +5,7 @@ import 'package:flutter_alarm_app/src/blocs/home/home_bloc.dart';
 import 'package:flutter_alarm_app/src/constants/device_properties.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_alarm_app/src/utils/notification_helper.dart';
-import 'package:flutter_alarm_app/src/widgets/clock_widget.dart';
+import 'package:flutter_alarm_app/src/widgets/home/clock_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
