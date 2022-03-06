@@ -27,7 +27,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
         break;
       case ClockType.minutes:
-        emit(state.copyWith(minutes: event.newValue));
+        if (state.minutes <= 1 && event.newValue >= 59) {
+          // we need to set hours to hours-1, if we pan the minutes hand CCW.
+          final int hours = state.hours - 1 < 0 ? state.hours - 1 + 12 : state.hours - 1;
+          emit(state.copyWith(hours: hours, minutes: event.newValue));
+        } else if (state.minutes >= 59 && event.newValue <= 1) {
+          // we need to set hours to hours+1, if we pan the minutes hand CW.
+          final int hours = state.hours + 1 >= 12 ? state.hours + 1 - 12 : state.hours + 1;
+          emit(state.copyWith(hours: hours, minutes: event.newValue));
+        } else {
+          emit(state.copyWith(minutes: event.newValue));
+        }
         break;
       case ClockType.seconds:
         emit(state.copyWith(seconds: event.newValue));

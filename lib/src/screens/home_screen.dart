@@ -119,8 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
           previous.hours != current.hours || previous.minutes != current.minutes || previous.seconds != current.seconds,
       builder: (_, HomeState state) {
         return ClockWidget(
-          hours: state.hours,
-          minutes: state.minutes,
+          // if the minutes == 60, then we need to set minutes to zero and hours to hours+1
+          hours: state.minutes == 60 ? state.hours + 1 : state.hours,
+          minutes: state.minutes == 60 ? 0 : state.minutes,
           seconds: state.seconds,
           onHourPanUpdate: (int newHours) => _homeBloc.add(
             HomeUpdateClockEvent(
