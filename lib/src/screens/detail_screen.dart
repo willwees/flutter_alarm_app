@@ -38,7 +38,7 @@ class _DetailScreenState extends State<DetailScreen> {
             children: <Widget>[
               Text('Alarm At: ${DateHelper.dateTimeToString(_alarmDateTime)}'),
               Text('Now: ${DateHelper.dateTimeToString(DateTime.now())}'),
-              Text('Diff seconds: $_alarmDiffSeconds'),
+              Text('Diff: ${DateHelper.numberToThousandSeparatorFormat(_alarmDiffSeconds)} seconds'),
               SizedBox(height: 100.0.w),
               BarChartWidget(
                 alarmDateTime: _alarmDateTime,
