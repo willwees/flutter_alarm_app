@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_app/src/constants/app_colors.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_alarm_app/src/widgets/detail/painter/bar_axis_painter.dart';
 import 'package:flutter_alarm_app/src/widgets/detail/painter/bar_data_painter.dart';
@@ -65,8 +66,7 @@ class _BarChartWidgetState extends State<BarChartWidget> with TickerProviderStat
     return AspectRatio(
       aspectRatio: 1.0,
       child: Container(
-        //TODO: temp color
-        color: Colors.green,
+        color: AppColors.kWhite2,
         padding: EdgeInsets.all(16.0.w),
         child: Stack(
           fit: StackFit.expand,
