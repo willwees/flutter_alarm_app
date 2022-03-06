@@ -23,7 +23,7 @@ class _AppState extends State<App> {
           primarySwatch: Colors.blue,
         ),
         navigatorKey: navigatorKey,
-        initialRoute: '/detail',
+        initialRoute: '/',
         routes: <String, Widget Function(BuildContext)>{
           '/': (BuildContext context) => const HomeScreen(),
         },

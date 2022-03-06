@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_alarm_app/src/widgets/detail/painter/bar_axis_painter.dart';
@@ -26,13 +28,17 @@ class _BarChartWidgetState extends State<BarChartWidget> with TickerProviderStat
 
   // add the painter parameters here so it can be shared between bar painters
   final double _lineStrokeWidth = 8.0.w;
-  final int _yTickCount = 6;
+  late final int _yTickCount;
   final double _arrowLineLength = 30.0.w;
 
   @override
   void initState() {
     super.initState();
 
+    // determine bar tick
+    _yTickCount = min(6, widget.alarmMaxDiffSeconds + 1);
+
+    // init animation
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),

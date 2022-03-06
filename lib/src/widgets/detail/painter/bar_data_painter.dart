@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_app/src/constants/app_colors.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
@@ -29,7 +31,6 @@ class BarDataPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
     // Determine bar width & height
     _paint.strokeWidth = _getBarWidth();
     final double barHeight = _getBarHeight(size);
@@ -51,7 +52,7 @@ class BarDataPainter extends CustomPainter {
       ),
     );
     _textPainter.layout();
-    return _textPainter.width;
+    return max(100.0.w, _textPainter.width); // set minimum bar width to 100.0.w
   }
 
   /// Calculate bar height
