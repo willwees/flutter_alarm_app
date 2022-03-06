@@ -122,12 +122,24 @@ class _HomeScreenState extends State<HomeScreen> {
           hours: state.hours,
           minutes: state.minutes,
           seconds: state.seconds,
-          onHourPanUpdate: (int newHours) =>
-              _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.hours, newValue: newHours)),
-          onMinutesPanUpdate: (int newMinutes) =>
-              _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.minutes, newValue: newMinutes)),
-          onSecondsPanUpdate: (int newSeconds) =>
-              _homeBloc.add(HomeUpdateClockEvent(clockType: ClockType.seconds, newValue: newSeconds)),
+          onHourPanUpdate: (int newHours) => _homeBloc.add(
+            HomeUpdateClockEvent(
+              clockType: ClockType.hours,
+              newValue: (newHours.toDouble() / 60).floor(), // convert back to normal hours (0-12)
+            ),
+          ),
+          onMinutesPanUpdate: (int newMinutes) => _homeBloc.add(
+            HomeUpdateClockEvent(
+              clockType: ClockType.minutes,
+              newValue: newMinutes,
+            ),
+          ),
+          onSecondsPanUpdate: (int newSeconds) => _homeBloc.add(
+            HomeUpdateClockEvent(
+              clockType: ClockType.seconds,
+              newValue: newSeconds,
+            ),
+          ),
         );
       },
     );
@@ -135,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSaveButton() {
     return Padding(
-      padding: EdgeInsets.all(8.0.w),
+      padding: EdgeInsets.all(16.0.w),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -145,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               alignment: Alignment.center,
               padding: EdgeInsets.all(20.0.w),
-              child: const Text('Save'),
+              child: const Text('Save Alarm'),
             ),
           ),
         ],

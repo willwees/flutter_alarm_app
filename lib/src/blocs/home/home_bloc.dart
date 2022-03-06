@@ -19,6 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     switch (event.clockType) {
       case ClockType.hours:
         if (state.clockMode == ClockMode.modeAM) {
+          // mode AM
           emit(state.copyWith(hours: event.newValue));
         } else {
           // mode PM

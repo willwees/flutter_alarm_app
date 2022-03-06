@@ -124,9 +124,18 @@ class ClockWidget extends StatelessWidget {
         width: double.infinity,
         child: Stack(
           children: <Widget>[
-            ClockHandWidget.hours(value: hours, onPanUpdate: onHourPanUpdate),
-            ClockHandWidget.minutes(value: minutes, onPanUpdate: onMinutesPanUpdate),
-            ClockHandWidget.seconds(value: seconds, onPanUpdate: onSecondsPanUpdate),
+            ClockHandWidget.hours(
+              value: hours * 60 + (minutes.toDouble() % 60).floor(), // convert to degrees hour (0-720)
+              onPanUpdate: onHourPanUpdate,
+            ),
+            ClockHandWidget.minutes(
+              value: minutes,
+              onPanUpdate: onMinutesPanUpdate,
+            ),
+            ClockHandWidget.seconds(
+              value: seconds,
+              onPanUpdate: onSecondsPanUpdate,
+            ),
           ],
         ),
       ),
