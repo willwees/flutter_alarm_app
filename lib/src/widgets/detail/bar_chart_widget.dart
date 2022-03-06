@@ -4,15 +4,55 @@ import 'package:flutter_alarm_app/src/widgets/detail/painter/bar_axis_painter.da
 import 'package:flutter_alarm_app/src/widgets/detail/painter/bar_data_painter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BarChartWidget extends StatelessWidget {
+class BarChartWidget extends StatefulWidget {
   final DateTime alarmDateTime;
   final int alarmDiffSeconds;
+  final int alarmMaxDiffSeconds;
 
   const BarChartWidget({
     Key? key,
     required this.alarmDateTime,
     required this.alarmDiffSeconds,
+    required this.alarmMaxDiffSeconds,
   }) : super(key: key);
+
+  @override
+  State<BarChartWidget> createState() => _BarChartWidgetState();
+}
+
+class _BarChartWidgetState extends State<BarChartWidget> with TickerProviderStateMixin {
+  late final Animation<double> _animation;
+  late final AnimationController _animationController;
+
+  // add the painter parameters here so it can be shared between bar painters
+  final double _lineStrokeWidth = 8.0.w;
+  final int _yTickCount = 6;
+  final double _arrowLineLength = 30.0.w;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    final Tween<double> _barHeightTween = Tween<double>(
+      begin: 0.0,
+      end: widget.alarmDiffSeconds / widget.alarmMaxDiffSeconds,
+    );
+    _animation = _barHeightTween.animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +67,21 @@ class BarChartWidget extends StatelessWidget {
           children: <Widget>[
             CustomPaint(
               painter: BarAxisPainter(
-                alarmText: DateHelper.dateTimeToString(alarmDateTime),
-                maxValue: alarmDiffSeconds,
+                alarmText: DateHelper.dateTimeToString(widget.alarmDateTime),
+                maxValue: widget.alarmMaxDiffSeconds,
+                lineStrokeWidth: _lineStrokeWidth,
+                tickCount: _yTickCount,
+                arrowLineLength: _arrowLineLength,
               ),
             ),
             CustomPaint(
               painter: BarDataPainter(
-                value: alarmDiffSeconds,
-                maxValue: alarmDiffSeconds,
+                value: widget.alarmDiffSeconds,
+                maxValue: widget.alarmMaxDiffSeconds,
+                valueHeightRatio: _animation.value,
+                lineStrokeWidth: _lineStrokeWidth,
+                tickCount: _yTickCount,
+                arrowLineLength: _arrowLineLength,
               ),
             ),
           ],

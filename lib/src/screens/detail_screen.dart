@@ -43,6 +43,7 @@ class _DetailScreenState extends State<DetailScreen> {
               BarChartWidget(
                 alarmDateTime: _alarmDateTime,
                 alarmDiffSeconds: _alarmDiffSeconds,
+                alarmMaxDiffSeconds: _alarmDiffSeconds,
               ),
             ],
           ),
