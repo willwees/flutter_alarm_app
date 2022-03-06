@@ -30,6 +30,7 @@ class _AppState extends State<App> {
         onGenerateRoute: (RouteSettings settings) {
           if(settings.name == '/detail'){
             final String? arguments = settings.arguments as String?;
+
             return MaterialPageRoute<dynamic>(builder: (BuildContext context) => DetailScreen(arguments: arguments));
           }
         },

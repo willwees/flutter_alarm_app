@@ -5,6 +5,7 @@ import 'package:flutter_alarm_app/src/blocs/home/home_bloc.dart';
 import 'package:flutter_alarm_app/src/constants/device_properties.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_alarm_app/src/utils/notification_helper.dart';
+import 'package:flutter_alarm_app/src/widgets/home/clock_mode_widget.dart';
 import 'package:flutter_alarm_app/src/widgets/home/clock_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,42 +95,16 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // AM
-            InkWell(
+            ClockModeWidget(
               onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modeAM)),
-              child: Container(
-                padding: EdgeInsets.all(8.0.w),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2.0),
-                  borderRadius: BorderRadius.horizontal(left: Radius.circular(14.0.r)),
-                  color: state.clockMode == ClockMode.modeAM ? Colors.green : null,
-                ),
-                child: Text(
-                  'AM',
-                  style: TextStyle(
-                    fontSize: 40.0.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              clockMode: ClockMode.modeAM,
+              activeClockMode: state.clockMode,
             ),
             // PM
-            InkWell(
+            ClockModeWidget(
               onTap: () => _homeBloc.add(const HomeChangeClockModeEvent(clockMode: ClockMode.modePM)),
-              child: Container(
-                padding: EdgeInsets.all(8.0.w),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2.0),
-                  borderRadius: BorderRadius.horizontal(right: Radius.circular(14.0.r)),
-                  color: state.clockMode == ClockMode.modePM ? Colors.green : null,
-                ),
-                child: Text(
-                  'PM',
-                  style: TextStyle(
-                    fontSize: 40.0.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              clockMode: ClockMode.modePM,
+              activeClockMode: state.clockMode,
             ),
           ],
         );
