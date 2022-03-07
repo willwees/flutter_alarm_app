@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_alarm_app/src/model/notification_payload_model.dart';
+import 'package:flutter_alarm_app/src/models/notification_payload_model.dart';
 import 'package:flutter_alarm_app/src/utils/date_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

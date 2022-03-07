@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_alarm_app/src/app.dart';
-import 'package:flutter_alarm_app/src/model/notification_payload_model.dart';
+import 'package:flutter_alarm_app/src/models/notification_payload_model.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -78,8 +78,6 @@ class NotificationHelper {
 
     if (details?.didNotificationLaunchApp == true) {
       if (details!.payload != null) {
-        print('payload: ${details.payload}');
-
         final NotificationPayloadModel notificationPayloadModel =
         NotificationPayloadModel.fromJson(jsonDecode(details.payload!) as Map<String, dynamic>);
         navigatorKey.currentState
